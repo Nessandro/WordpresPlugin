@@ -1,0 +1,14 @@
+{
+  "name": "TaxFormPlugin/TaxFormPlugin",
+  "description": "Plugin which provides a form which allow to count a product tax.",
+  "version": "1.0.0",
+  "type": "project",
+  "license": "MIT",
+  "authors": [],
+  "autoload": {
+    "psr-4": {
+      "TaxFormPlugin\\Core\\": "./core",
+      "TaxFormPlugin\\App\\": "./app"
+    }
+  }
+}

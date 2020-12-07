@@ -2,6 +2,7 @@
 
 namespace TaxFormPlugin\Core\Utilities;
 
+use TaxFormPlugin\Core\Interfaces\AbstractAction;
 use TaxFormPlugin\Core\Interfaces\AbstractShortCode;
 
 /**
@@ -19,14 +20,16 @@ class ActionManager
     {
         //todo: load from some configuration place
 
+        //app actions
         $this->locations[] = [
-            'path' => PluginConstants::getPluginRootDir() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Actions',
-            'namespace' => '\\TaxFormPlugin\\App\\Actions\\'
+            'path'      => PluginConstants::getPluginRootDir() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Actions',
+            'namespace' => PluginConstants::getPluginRootNamespace().'App\\Actions\\'
         ];
 
+        //core actions
         $this->locations[] = [
-            'path' => PluginConstants::getPluginRootDir() . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'Actions',
-            'namespace' => '\\TaxFormPlugin\\Core\\Actions\\'
+            'path'      => PluginConstants::getPluginRootDir() . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'Actions',
+            'namespace' => PluginConstants::getPluginRootNamespace().'Core\\Actions\\'
         ];
     }
 
@@ -36,6 +39,7 @@ class ActionManager
      */
     public function load()
     {
+
         foreach ($this->locations as $location) {
             $this->loadFromLocation($location['path'], $location['namespace']);
         }
@@ -54,6 +58,10 @@ class ActionManager
 
             /* @var $shortCode AbstractAction */
             $shortCode = new $className();
+            if(!($shortCode instanceof AbstractAction) || !$shortCode->getHookId() ) {
+                continue;
+            }
+
 
             add_action($shortCode->getHookId(), function () use ($shortCode) {
                 return $shortCode->fire();

@@ -1,6 +1,9 @@
 <?php
 namespace TaxFormPlugin\App\ShortCodes;
+use TaxFormPlugin\App\Enums\Scripts;
+use TaxFormPlugin\App\UI\TaxesForm;
 use TaxFormPlugin\Core\Interfaces\AbstractShortCode;
+use TaxFormPlugin\Core\Utilities\WeakTemplateRender;
 
 /**
  * File:   TaxCalculateForm.php
@@ -11,16 +14,18 @@ use TaxFormPlugin\Core\Interfaces\AbstractShortCode;
  */
 class TaxCalculateForm extends AbstractShortCode
 {
-    protected $id = 'tax-form-exercise';
-    protected $content = null;
+    protected $id       = 'tax-form-exercise';
+    protected $content  = null;
     protected $args     = [];
-    protected $tag = null;
+    protected $tag      = null;
 
     /**
      * @inheritDoc
      */
     public function execute()
     {
-        return "<div>Test SHORT CODE!!!<div>";
+        wp_enqueue_script(Scripts::VUE_INSTANCE);
+
+        return WeakTemplateRender::get()->render('main', ['content' => (new TaxesForm())->toHtml()]);
     }
 }

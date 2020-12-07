@@ -1,0 +1,39 @@
+<div id="taxes-app">
+    <taxes-item component_url="{{ajaxUrl}}"></taxes-item>
+</div>
+
+
+<!-- TODO: Move component template to the other component file -->
+<script type="text/x-template" id="t-taxes-form-component" :component_url="component_url">
+    <div id="taxForm">
+        <div v-if="errors.length" style="color: red"> <!-- TODO: move to error component file -->
+            <p><b>Please provide the required fields:</b></p>
+            <div>
+                <ul>
+                    <li v-for="error in errors" v-html="error"></li>
+                </ul>
+            </div>
+        </div>
+
+        <label for="product">Product Name</label>
+        <input type="text" id="product" name="product" placeholder="Provide product name ...." v-model="productName">
+        <label for="nettoPrice">Netto Price</label>
+        <input type="number" id="nettoPrice" name="nettoPrice"  v-model="nettoPrice">
+
+        <div v-if="currencies">
+            <label for="currency">Choose Currency:</label>
+            <select name="currency" id="currency" v-model="currency">
+                <option :value="currency.id" v-html="currency.suffix" v-for="currency in currencies"></option>
+            </select>
+        </div>
+
+        <div v-if="taxes">
+            <label for="tax">Choose Currency:</label>
+            <select name="tax" id="tax" v-model="tax">
+                <option :value="tax" v-html="getTaxName(tax)" v-for="tax in taxes"></option>
+            </select>
+        </div>
+
+        <input type="submit" value="Count" @click="taxCalculate">
+    </div>
+</script>

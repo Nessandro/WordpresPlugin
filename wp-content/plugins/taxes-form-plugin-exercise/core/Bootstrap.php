@@ -13,5 +13,6 @@ require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . "vendor" . DIRECTORY_SEPAR
 
 /**
  *
+ * register all plugin function in the wordpress.
  */
 new \TaxFormPlugin\Core\Utilities\Register();

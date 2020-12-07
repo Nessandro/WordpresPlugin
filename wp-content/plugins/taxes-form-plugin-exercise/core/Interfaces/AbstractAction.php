@@ -9,12 +9,28 @@ namespace TaxFormPlugin\Core\Interfaces;
  * @author Tomasz Bielecki <tomasz.bi@modulesgarden.com>
  * @package  TaxFormPlugin\Core\Interfaces
  */
-class AbstractAction
+abstract class AbstractAction
 {
-    protected $hookId;
+    protected $hookId = false;
 
-    public function fire(){
-
+    /**
+     * @return mixed
+     */
+    public function getHookId()
+    {
+        return $this->hookId;
     }
+
+    /**
+     * @param mixed $hookId
+     */
+    public function setHookId($hookId): void
+    {
+        $this->hookId = $hookId;
+    }
+
+
+
+    public abstract function fire();
 
 }

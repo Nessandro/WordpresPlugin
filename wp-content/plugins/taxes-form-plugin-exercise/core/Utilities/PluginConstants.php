@@ -29,6 +29,11 @@ class PluginConstants
      */
     protected static $pluginMainFileName    = null;
 
+    /**
+     * @var string
+     */
+    protected static $pluginNamespace = "\\TaxFormPlugin\\";
+
 
     /**
      *
@@ -75,5 +80,13 @@ class PluginConstants
     public static function getPluginMainFilePath()
     {
         return static::$pluginMainFilePath;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getPluginRootNamespace()
+    {
+        return static::$pluginNamespace;
     }
 }

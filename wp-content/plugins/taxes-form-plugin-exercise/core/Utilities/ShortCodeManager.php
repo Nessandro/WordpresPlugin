@@ -15,20 +15,26 @@ use TaxFormPlugin\Core\Interfaces\AbstractShortCode;
 class ShortCodeManager
 {
 
+    /**
+     * @var array
+     */
     protected $locations = [];
 
+    /**
+     * ShortCodeManager constructor.
+     */
     public function __construct()
     {
         //todo: load from some configuration place
 
         $this->locations[] = [
             'path'      => PluginConstants::getPluginRootDir().DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'ShortCodes',
-            'namespace' => '\\TaxFormPlugin\\App\\ShortCodes\\'
+            'namespace' => PluginConstants::getPluginRootNamespace().'App\\ShortCodes\\'
         ];
 
         $this->locations[] = [
             'path'      => PluginConstants::getPluginRootDir().DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'ShortCodes',
-            'namespace' =>'\\TaxFormPlugin\\Core\\ShortCodes\\'
+            'namespace' => PluginConstants::getPluginRootNamespace().'Core\\ShortCodes\\'
         ];
     }
 
@@ -36,7 +42,7 @@ class ShortCodeManager
      *
      * load short codes per locations
      */
-    public function load()
+    public function load() : void
     {
         foreach($this->locations as $location)
         {
@@ -49,7 +55,7 @@ class ShortCodeManager
      * load all files from location
      * @param string $location
      */
-    protected function loadFromLocation(string $location, string $namespace)
+    protected function loadFromLocation(string $location, string $namespace): void
     {
         $files      = glob($location.'/*.php');
         foreach($files as $file)
@@ -59,10 +65,22 @@ class ShortCodeManager
             /* @var $shortCode AbstractShortCode */
             $shortCode = new $className();
 
-            add_shortcode($shortCode->getId(), function($args = [], string $content, string $tag) use($shortCode){
-                return $shortCode->fire($args, $content, $tag);
-            });
+            if(!$shortCode instanceof AbstractShortCode){
+                //todo add some reporting log
+                continue;
+            }
+            $this->addShortCode($shortCode);
         }
 
+    }
+
+    /**
+     * @param AbstractShortCode $shortCode
+     */
+    protected function addShortCode(AbstractShortCode $shortCode) : void
+    {
+        add_shortcode($shortCode->getId(), function($args = [], string $content, string $tag) use($shortCode){
+            return $shortCode->fire($args, $content, $tag);
+        });
     }
 }

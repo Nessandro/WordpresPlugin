@@ -16,6 +16,10 @@ use TaxFormPlugin\Core\Configuration\Uninstall;
 class Register
 {
 
+    /**
+     * register all functions on create
+     * Register constructor.
+     */
     public function __construct()
     {
         $this->initialize();
@@ -27,14 +31,13 @@ class Register
      */
     public function initialize()
     {
-
         $this->registerActivationFunction();
         $this->registerDeactivationFunction();
         $this->registerUninstallFunction();
         $this->registerFilters();
         $this->registerActions();
         $this->registerShortCodes();
-
+        $this->registerControllerRouting();
     }
 
     /**
@@ -79,7 +82,7 @@ class Register
      */
     public function registerFilters()
     {
-
+        //todo register filters
     }
 
     /**
@@ -87,7 +90,8 @@ class Register
      */
     public function registerActions()
     {
-
+        $manager = new ActionManager();
+        $manager->load();
     }
 
     /**
@@ -98,6 +102,24 @@ class Register
     {
         $manager = new ShortCodeManager();
         $manager->load();
+    }
+
+    /**
+     *
+     */
+    public function registerControllerRouting()
+    {
+
+        add_action('wp_ajax_'.PluginConstants::getPluginMainFileName(), function(){
+            $routing = new Routing(true);
+            return $routing->resolve();
+        });
+
+
+        add_action('wp_ajax_nopriv_'.PluginConstants::getPluginMainFileName(), function(){
+            $routing = new Routing(false);
+            return $routing->resolve();
+        });
     }
 
 }

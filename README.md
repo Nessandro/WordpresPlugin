@@ -24,6 +24,8 @@ Add the `action` attribute to the request with the plugin name as a value (`taxe
 The routes are defined in the [`route.php`](https://github.com/Nessandro/WordpresPlugin/blob/master/wp-content/plugins/taxes-form-plugin-exercise/app/Configuration/routes.php) file 
 
 
+The ajax actions are stored in the  [Controllers](https://github.com/Nessandro/WordpresPlugin/tree/master/wp-content/plugins/taxes-form-plugin-exercise/app/Controllers) folder
+
 
 More helpful object can be found in the [Utilities](https://github.com/Nessandro/WordpresPlugin/tree/master/wp-content/plugins/taxes-form-plugin-exercise/core/Utilities) folder.
 

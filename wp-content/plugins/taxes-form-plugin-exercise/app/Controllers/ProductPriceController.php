@@ -24,19 +24,13 @@ class ProductPriceController extends AbstractRouteController
      */
     public function index()
     {
-
-        try{
-            if($this->isValidationErrors())
-            {
-                return Response::json(['errors' => $this->errors], 400);
-            }
-
-            return $this->execute();
-        }catch (\Throwable $exception)
+        if($this->isValidationErrors())
         {
-            var_dump($exception->getMessage());
+            return Response::json(['errors' => $this->errors], 400);
         }
-        die();
+
+        return $this->execute();
+
     }
 
     /**

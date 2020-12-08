@@ -21,7 +21,8 @@ Vue.component('taxes-item', {
             currencies:     [
                 {id: 'pln', suffix: 'PLN'},
                 {id: 'euro', suffix: 'EURO'}
-            ]
+            ],
+            alertData:{},
         };
     },
     methods:{
@@ -30,33 +31,18 @@ Vue.component('taxes-item', {
                return;
             }
 
-            //todo: move to PHP API
-            // let countedTax  = (this.tax * parseFloat(this.nettoPrice))/ 100;
-            // let bruttoPrice = parseFloat(this.nettoPrice) + parseFloat(countedTax);
-            // let nettoPrice = parseFloat(this.nettoPrice);
-            // console.log('TAX: ', countedTax);
-            // console.log('Brutto Price: ', bruttoPrice);
-            // console.log('Netto Price: ', nettoPrice);
-
+            const self = this;
             /**
              * in progress request
              */
-
-            jQuery.ajax({
-                method: "POST",
-                url: this.component_url,
-                data: {
-                    tax: this.tax,
-                    nettoPrice: this.nettoPrice,
-                    productName: this.productName,
-                    currency: this.currency,
-                    action: 'taxes-form-plugin-exercise',
-                    rp: '/product/prices',
-                }
+            fetch(self.component_url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: self.getParams()
             })
-                .then(result => {
-                    console.log(result);
-                })
+                .then(response=> response.json())
+                .then( data => {self.showProduct(data)})
+                .catch(error => {console.log(error);});
 
         },
         validateFields: function(){
@@ -81,6 +67,23 @@ Vue.component('taxes-item', {
         },
         getTaxName: function(tax){
             return tax + ' %';
+        },
+        getParams: function() {
+            let data =  {
+                tax: this.tax,
+                nettoPrice: this.nettoPrice,
+                productName: this.productName,
+                currency: this.currency,
+                action: 'taxes-form-plugin-exercise',
+                rp: '/product/prices',
+            };
+
+            return Object.keys(data).map(function(k) {
+                return k +'='+ data[k];
+            }).join('&');
+        },
+        showProduct(data){
+            this.alertData = data;
         },
     }
 });

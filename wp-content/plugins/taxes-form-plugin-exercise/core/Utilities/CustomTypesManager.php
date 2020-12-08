@@ -3,17 +3,18 @@
 namespace TaxFormPlugin\Core\Utilities;
 
 use TaxFormPlugin\Core\Interfaces\AbstractAction;
-use TaxFormPlugin\Core\Interfaces\AbstractShortCode;
+use TaxFormPlugin\Core\Interfaces\AbstractCustomType;
 
 /**
- * File:   ActionManager.php
- * Date:   06.12.2020
- * Class: ActionManager
+ * File:   CustomTypesManager.php
+ * Date:   08.12.2020
+ * Class: CustomTypesManager
  * @author Tomasz Bielecki <tomasz.bi@modulesgarden.com>
  * @package  TaxFormPlugin\Core\Utilities
  */
-class ActionManager
+class CustomTypesManager
 {
+
     /**
      * @var array
      */
@@ -24,25 +25,19 @@ class ActionManager
      */
     public function __construct()
     {
-        //todo: load from some configuration place
-
         //app actions
         $this->locations[] = [
-            'path'      => PluginConstants::getPluginRootDir() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Actions',
-            'namespace' => PluginConstants::getPluginRootNamespace().'App\\Actions\\'
+            'path'      => PluginConstants::getPluginRootDir() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'CustomTypes',
+            'namespace' => PluginConstants::getPluginRootNamespace().'App\\CustomTypes\\'
         ];
 
         //core actions
         $this->locations[] = [
-            'path'      => PluginConstants::getPluginRootDir() . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'Actions',
-            'namespace' => PluginConstants::getPluginRootNamespace().'Core\\Actions\\'
+            'path'      => PluginConstants::getPluginRootDir() . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'CustomTypes',
+            'namespace' => PluginConstants::getPluginRootNamespace().'Core\\CustomTypes\\'
         ];
     }
 
-    /**
-     *
-     * load short codes per locations
-     */
     public function load()
     {
         foreach ($this->locations as $location) {
@@ -60,15 +55,14 @@ class ActionManager
         foreach ($files as $file) {
             $className = $namespace . str_replace('.php', '', basename($file));
 
-            /* @var $shortCode AbstractAction */
-            $shortCode = new $className();
-            if(!($shortCode instanceof AbstractAction) || !$shortCode->getHookId() ) {
+            /* @var $shortCode AbstractCustomType */
+            $customType = new $className();
+            if(!$customType instanceof AbstractCustomType ) {
                 continue;
             }
 
-            add_action($shortCode->getHookId(), function () use ($shortCode) {
-                return $shortCode->fire();
-            });
+            register_post_type($customType->getName(), $customType->getAttributes());
         }
     }
+
 }

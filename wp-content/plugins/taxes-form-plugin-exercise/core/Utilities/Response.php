@@ -138,7 +138,7 @@ class Response
     {
         $response = new static(json_encode($data), $status);
         $response->addHeader('Content-Type', 'application/json');
-        $response->send();
+        return $response->send();
     }
 
 

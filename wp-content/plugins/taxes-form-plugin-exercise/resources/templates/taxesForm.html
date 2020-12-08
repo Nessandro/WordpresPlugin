@@ -14,7 +14,14 @@
                 </ul>
             </div>
         </div>
-
+        <!--        -->
+<!--        TODO: move to other component-->
+        <div v-if="alertData" style="color: green">
+            <div v-if="alertData.brutto" v-html="'Brutto Price: ' +  alertData.brutto"></div>
+            <div v-if="alertData.netto" v-html="'Netto Price: ' +  alertData.netto"></div>
+            <div v-if="alertData.taxPrice" v-html="'Tax Price: ' +  alertData.taxPrice"></div>
+        </div>
+<!--        -->
         <label for="product">Product Name</label>
         <input type="text" id="product" name="product" placeholder="Provide product name ...." v-model="productName">
         <label for="nettoPrice">Netto Price</label>

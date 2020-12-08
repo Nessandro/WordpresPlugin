@@ -25,7 +25,6 @@ class Register
         $this->initialize();
     }
 
-
     /**
      *
      */
@@ -38,6 +37,7 @@ class Register
         $this->registerActions();
         $this->registerShortCodes();
         $this->registerControllerRouting();
+        $this->registerCustomTypes();
     }
 
     /**
@@ -120,6 +120,18 @@ class Register
             $routing = new Routing(false);
             return $routing->resolve();
         });
+    }
+
+    /**
+     *
+     */
+    public function registerCustomTypes()
+    {
+        add_action( 'init', function(){
+            $manager = new CustomTypesManager();
+            return $manager->load();
+        }, 0 );
+
     }
 
 }

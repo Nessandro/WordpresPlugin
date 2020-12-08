@@ -30,10 +30,13 @@ Vue.component('taxes-item', {
                return;
             }
 
-            let countedTax  = (this.tax * parseFloat(this.nettoPrice))/ 100;
-            let bruttoPrice = parseFloat(this.nettoPrice) + parseFloat(countedTax);
-            let nettoPrice = parseFloat(this.nettoPrice);
-
+            //todo: move to PHP API
+            // let countedTax  = (this.tax * parseFloat(this.nettoPrice))/ 100;
+            // let bruttoPrice = parseFloat(this.nettoPrice) + parseFloat(countedTax);
+            // let nettoPrice = parseFloat(this.nettoPrice);
+            // console.log('TAX: ', countedTax);
+            // console.log('Brutto Price: ', bruttoPrice);
+            // console.log('Netto Price: ', nettoPrice);
 
             /**
              * in progress request
@@ -52,13 +55,9 @@ Vue.component('taxes-item', {
                 }
             })
                 .then(result => {
-                    console.log(result)
+                    console.log(result);
                 })
-                .catch(error => { console.log(error)})
 
-            console.log('TAX: ', countedTax);
-            console.log('Brutto Price: ', bruttoPrice);
-            console.log('Netto Price: ', nettoPrice);
         },
         validateFields: function(){
             this.errors = [];

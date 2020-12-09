@@ -27,6 +27,8 @@ Vue.component('taxes-item', {
     },
     methods:{
         taxCalculate: function() {
+            this.alertData = {};
+
             if(!this.validateFields()) {
                return;
             }
